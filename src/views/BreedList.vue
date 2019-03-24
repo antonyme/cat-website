@@ -3,7 +3,12 @@
 </template>
 
 <script>
+import catService from '@/lib/catService'
+
 export default {
-  name: 'BreedList'
+  name: 'BreedList',
+  created () {
+    return catService.getBreedList().then(console.log)
+  }
 }
 </script>
