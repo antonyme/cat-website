@@ -3,12 +3,18 @@
 </template>
 
 <script>
-import catService from '@/lib/catService'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'BreedList',
+  computed: {
+    ...mapState(['breedList'])
+  },
+  methods: {
+    ...mapActions(['fetchBreedList'])
+  },
   created () {
-    return catService.getBreedList().then(console.log)
+    return this.fetchBreedList()
   }
 }
 </script>
