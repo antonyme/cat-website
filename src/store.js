@@ -40,7 +40,7 @@ export default new Vuex.Store({
       state.breedList = data
     },
     'RECEIVED_BREED_MEDIA' (state, { index, mediaUrl }) {
-      state.breedList[index].mediaUrl = mediaUrl
+      Vue.set(state.breedList[index], 'mediaUrl', mediaUrl)
     },
     'SELECTED_ORIGIN_CHANGED' (state, origin) {
       state.selectedOrigin = origin
