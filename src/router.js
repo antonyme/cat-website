@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import BreedList from '@/views/BreedList.vue'
+import Breed from '@/views/Breed.vue'
 
 Vue.use(Router)
 
@@ -11,7 +12,14 @@ export default new Router({
     {
       path: '/',
       name: 'breedList',
-      component: BreedList
+      component: BreedList,
+      children: [
+        {
+          path: 'breed/:breedId',
+          name: 'breed',
+          component: Breed
+        }
+      ]
     }
   ]
 })

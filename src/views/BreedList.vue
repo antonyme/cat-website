@@ -16,10 +16,11 @@
           :title="breed.name"
           :sub-title="breed.origin"
         >
-          <b-link :to="{ name: 'details', params: { breedId: breed.id } }">Details</b-link>
+          <b-link :to="{ name: 'breed', params: { breedId: breed.id } }">Details</b-link>
         </b-card>
       </li>
     </ol>
+    <router-view />
   </section>
 </template>
 
