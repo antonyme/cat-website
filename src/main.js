@@ -4,6 +4,7 @@ import Toasted from 'vue-toasted'
 import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
+import { handler } from '@/lib/error'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -18,6 +19,7 @@ Vue.use(Toasted, {
 })
 
 Vue.config.productionTip = false
+Vue.config.errorHandler = handler
 
 new Vue({
   router,
