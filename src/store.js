@@ -15,6 +15,13 @@ export default new Vuex.Store({
         const breedOriginDup = state.breedList.map(breed => breed.origin)
         return [...new Set(breedOriginDup)]
       }
+    },
+    filteredBreedList (state) {
+      if (state.selectedOrigin) {
+        return state.breedList.filter(breed => breed.origin === state.selectedOrigin)
+      } else {
+        return state.breedList
+      }
     }
   },
   mutations: {
