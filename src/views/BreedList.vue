@@ -12,11 +12,10 @@
         v-for="breed in filteredBreedList"
         :key="breed.id"
       >
-        <b-card class="mb-4"
-          :title="breed.name"
-          :sub-title="breed.origin"
-        >
-          <b-card-img-lazy :src="breed.mediaUrl" />
+        <b-card class="mb-4">
+          <b-card-img-lazy v-if="breed.mediaUrl" :src="breed.mediaUrl" />
+          <b-card-title>{{ breed.name }}</b-card-title>
+          <b-card-sub-title>{{ breed.origin }}</b-card-sub-title>
           <b-link :to="{ name: 'breed', params: { breedId: breed.id } }">Details</b-link>
         </b-card>
       </li>

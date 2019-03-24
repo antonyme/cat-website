@@ -11,7 +11,7 @@
     </div>
     <b-row v-else>
     <b-col>
-      <b-img thumbnail :src="breed.mediaUrl" />
+      <b-img thumbnail :src="breed.mediaUrl || ''" />
     </b-col>
     <b-col>
       <p>{{description}}</p>
@@ -29,17 +29,20 @@ export default {
   name: 'Breed',
   data () {
     return {
-      description: null
+      description: null,
+      descriptionLoading: false
     }
   },
   methods: {
     onClose () {
-      this.$router.push({ name: 'breedList' })
+      this.$router.go(-1)
     },
     fetchDescription () {
+      this.descriptionLoading = true
       wikiService.getDescription(this.breed.wikiPage).then(description => {
         this.description = description
       }).catch(handler)
+        .finally(() => { this.descriptionLoading = false })
     }
   },
   computed: {
@@ -51,8 +54,7 @@ export default {
   },
   watch: {
     breed (newBreed) {
-      console.log(JSON.stringify(newBreed))
-      if (newBreed) {
+      if (newBreed && !this.description && !this.descriptionLoading) {
         this.fetchDescription()
       }
     }

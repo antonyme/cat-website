@@ -32,7 +32,7 @@ export default {
   },
   getDescription (wikiPage) {
     return endpoint.get(`page/summary/${wikiPage}`).then(({ data }) => {
-      return data.description
+      return data.description || data.displaytitle // description can be missing
     })
   }
 }
