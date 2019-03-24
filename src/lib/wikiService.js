@@ -29,5 +29,10 @@ export default {
       if (!firstMedia) throw new ServerHttpError(404)
       return firstMedia.original.source
     })
+  },
+  getDescription (wikiPage) {
+    return endpoint.get(`page/summary/${wikiPage}`).then(({ data }) => {
+      return data.description
+    })
   }
 }
