@@ -5,10 +5,9 @@ import {
 } from '@/lib/error'
 
 const endpoint = axios.create({
-  baseURL: 'https://api.thecatapi.com/v1/',
+  baseURL: 'https://en.wikipedia.org/api/rest_v1/',
   headers: {
-    'Accept': 'application/json',
-    'x-api-key': process.env.VUE_APP_CAT_API_KEY
+    'Accept': 'application/json; charset=utf-8; profile="https://www.mediawiki.org/wiki/Specs/Media/1.4.1"'
   }
 })
 endpoint.interceptors.response.use(function (response) {
@@ -24,16 +23,11 @@ endpoint.interceptors.response.use(function (response) {
 })
 
 export default {
-  getBreedList () {
-    return endpoint.get('/breeds').then(({ data }) => {
-      return data.map(breed => {
-        return {
-          id: breed.id,
-          name: breed.name,
-          origin: breed.origin,
-          wikiPage: breed.wikipedia_url ? breed.wikipedia_url.split('/').pop() : undefined
-        }
-      })
+  getMedia (wikiPage) {
+    return endpoint.get(`page/media/${wikiPage}`).then(({ data }) => {
+      const firstMedia = data.items[0]
+      if (!firstMedia) throw new ServerHttpError(404)
+      return firstMedia.original.source
     })
   }
 }

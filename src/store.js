@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import catService from '@/lib/catService'
+import wikiService from '@/lib/wikiService'
+import {
+  E_SERVER_HTTP
+} from '@/constants'
+import logger from '@/lib/logger'
 
 Vue.use(Vuex)
 
@@ -34,6 +39,9 @@ export default new Vuex.Store({
     'RECEIVED_BREED_LIST' (state, data) {
       state.breedList = data
     },
+    'RECEIVED_BREED_MEDIA' (state, { index, mediaUrl }) {
+      state.breedList[index].mediaUrl = mediaUrl
+    },
     'SELECTED_ORIGIN_CHANGED' (state, origin) {
       state.selectedOrigin = origin
     }
@@ -42,10 +50,27 @@ export default new Vuex.Store({
     fetchBreedList ({ state, commit }) {
       if (state.breedListLoading) return
       commit('START_FETCH_BREED_LIST')
-      return catService.getBreedList().then((res) => {
+      return catService.getBreedList().then(res => {
         commit('RECEIVED_BREED_LIST', res)
       }).finally(() => {
         commit('END_FETCH_BREED_LIST')
+      })
+    },
+    fetchAllBreedMedia ({ state, dispatch }) {
+      return Promise.all(
+        state.breedList.map((v, index) => dispatch('fetchBreedMedia', index))
+      )
+    },
+    fetchBreedMedia ({ state, commit }, index) {
+      const wikiPage = state.breedList[index].wikiPage
+      return wikiService.getMedia(wikiPage).then(mediaUrl => {
+        commit('RECEIVED_BREED_MEDIA', { index, mediaUrl })
+      }).catch(err => {
+        if (err.name === E_SERVER_HTTP && err.statusCode === 404) {
+          logger.log(`cat image not found for ${state.breedList[index].name}`)
+        } else {
+          throw err
+        }
       })
     },
     setSelectedOrigin ({ commit }, origin) {

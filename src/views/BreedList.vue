@@ -15,6 +15,7 @@
         <b-card class="mb-4"
           :title="breed.name"
           :sub-title="breed.origin"
+          :img-src="breed.mediaUrl"
         >
           <b-link :to="{ name: 'breed', params: { breedId: breed.id } }">Details</b-link>
         </b-card>
@@ -33,10 +34,12 @@ export default {
     ...mapGetters(['filteredBreedList'])
   },
   methods: {
-    ...mapActions(['fetchBreedList'])
+    ...mapActions(['fetchBreedList', 'fetchAllBreedMedia'])
   },
   created () {
-    return this.fetchBreedList()
+    return this.fetchBreedList().then(() => {
+      this.fetchAllBreedMedia()
+    })
   }
 }
 </script>
