@@ -15,8 +15,8 @@
         <b-card class="mb-4"
           :title="breed.name"
           :sub-title="breed.origin"
-          :img-src="'breed.mediaUrl'"
         >
+          <b-card-img-lazy :src="breed.mediaUrl" />
           <b-link :to="{ name: 'breed', params: { breedId: breed.id } }">Details</b-link>
         </b-card>
       </li>
